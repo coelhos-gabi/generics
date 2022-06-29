@@ -28,22 +28,16 @@ public class GenericsExercicio {
     public static void main(String[] args) {
         List<Empregado> empregados = new ArrayList<>();
         Empregado empregado1 = new Empregado("Gabriela", 21, BigDecimal.valueOf(2000));
-        Empregado empregado2 = new Empregado("Andressa", 21, BigDecimal.valueOf(4000));
+        Empregado empregado2 = new Empregado("Andressa", 22, BigDecimal.valueOf(4000));
         Empregado empregado3 = new Empregado("Roberta", 18, BigDecimal.valueOf(3000));
 
         empregados.add(empregado1);
         empregados.add(empregado2);
         empregados.add(empregado3);
 
-        List<Empregado> empregadosList = MyOwnLists.asListedSorted(empregados, new Comparator<Empregado>() {
-            @Override
-            public int compare(Empregado empregado1, Empregado empregado2) {
-                if((empregado1.getNome().compareTo(empregado2.getNome()) < 0)){
-                    return -1;
-                }
-                return Integer.compare(empregado1.getMatricula(), empregado2.getMatricula());
-            }
-        });
+        List<Empregado> empregadosList = MyOwnLists.asListedSorted(
+                empregados, (e1,e2)-> e1.getNome().compareTo(e2.getNome()));
+
         for(Empregado empregado: empregadosList){
             System.out.println("Nome: " + empregado.getNome());
             System.out.printf("Matrícula: %d %n", empregado.getMatricula());
@@ -57,20 +51,8 @@ public class GenericsExercicio {
         listaAnimais.add(animal2);
         listaAnimais.add(animal3);
 
-        List<Gato> animaisOrdenados = MyOwnLists.asListedSorted(listaAnimais, new Comparator<Gato>() {
-            @Override
-            public int compare(Gato g1, Gato g2) {
-                int nome = g1.getNome().compareToIgnoreCase(g2.getNome());
-                if(nome != 0 ){
-                    return nome;
-                }
-                int cor = g1.getCor().compareToIgnoreCase(g2.getCor());
-                if(cor != 0 ){
-                    return cor;
-                }
-                return Integer.compare(g1.getIdade(), g2.getIdade());
-            }
-        });
+        List<Gato> animaisOrdenados = MyOwnLists.asListedSorted(listaAnimais,
+                Comparator.comparingInt(Gato::getIdade));
         for(Gato gato : animaisOrdenados){
             System.out.println("Nome: " + gato.getNome());
             System.out.println("Cor: " + gato.getCor());
